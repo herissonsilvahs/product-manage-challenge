@@ -1,0 +1,3 @@
+node_modules
+package-lock.json
+product-manage-api/configs.js
