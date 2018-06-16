@@ -14,7 +14,7 @@ Not 100% funcionality, *just for learning*<br>
 **Features**
 * Server API
 - [x] CRUD products
-- [x] CRUD Users
+- [ ] CRUD Users
 - [x] JWT implemented
 - [ ] Some validations
 
