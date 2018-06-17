@@ -19,6 +19,14 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('public-key', configs.secret); // public key for jwt token generation
 
+app.use(function (request, response, next) {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
+
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/auth/products', productsRouter);

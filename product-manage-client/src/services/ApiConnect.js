@@ -1,4 +1,4 @@
-import axios form 'axios'
+import axios from 'axios'
 
 /* This is implementation of comunication with api */
 

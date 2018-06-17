@@ -14,12 +14,12 @@ Not 100% funcionality, *just for learning*<br>
 **Features**
 * Server API
 - [x] CRUD products
-- [ ] CRUD Users
+- [x] CRUD Users
 - [x] JWT implemented
 - [ ] Some validations
 
 * Client API
-- [X] API comunication
+- [x] API comunication
 - [ ] Login Page
 - [ ] User Register Page
 - [ ] User Dashboard
