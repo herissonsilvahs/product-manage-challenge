@@ -16,10 +16,14 @@ Not 100% funcionality, *just for learning*<br>
 - [x] CRUD products
 - [x] CRUD Users
 - [x] JWT implemented
-- [ ] Some validations
+- [x] Some validations
 
 * Client API
 - [x] API comunication
-- [ ] Login Page
 - [x] User Register Page
-- [ ] User Dashboard
+- [x] Registry user
+- [x] Login Page
+- [ ] Persist token
+- [ ] Login user in dashboard
+- [ ] Client Dashboard
+- [ ] Admin Dashboard
