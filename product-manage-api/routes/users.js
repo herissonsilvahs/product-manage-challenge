@@ -14,8 +14,11 @@ router.get('/', function(request, response, next) {
 
 router.post('/new/', function(request, response, next){
     var user = new User(request.body);
-    user.save();
-    response.status(201).json({message:'success', user:user});
+    user.save(function(error){
+        if (error)
+            response.status(400).json({message: error});
+        response.status(201).json({message:'success', user:user})
+    });
 });
 
 router.put('/update/:id', function(request, response, next){

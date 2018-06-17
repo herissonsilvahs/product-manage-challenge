@@ -4,33 +4,32 @@
             <form class="form col-5">
                 <div class="form-group">
                     <label for="inputName">Name</label>
-                    <input type="text" name="name" v-model="name" class="form-control" id="inputName" placeholder="Name">
+                    <input required type="text" name="name" v-model="name" class="form-control" id="inputName" placeholder="Name">
                 </div>
                 <div class="form-group">
                     <label for="inputEmail">Email address</label>
-                    <input type="email" name="email" v-model="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                    <input required type="email" name="email" v-model="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
                     <small id="emailHelp" class="form-text text-muted"></small>
                 </div>
                 <div class="form-group">
                     <label for="inputCpf">CPF</label>
-                    <input type="text" name="cpf" v-model="cpf" class="form-control" id="inputCpf" placeholder="000.000.000-00">
+                    <input required type="text" name="cpf" v-model="cpf" class="form-control" id="inputCpf" placeholder="000.000.000-00">
                 </div>
                 <div class="form-group">
                     <label for="inputBirthday">Birthday</label>
-                    <input type="date" name="birthday" v-model="birthday" class="form-control" id="inputBirthday">
-                </div>
-                <div class="form-group">
-                    <select name="user_type" v-model="user_type" class="custom-select">
-                        <option value="">User Type</option>
-                        <option value="0">Administrator</option>
-                        <option value="1">Client</option>
-                    </select>
+                    <input required type="date" name="birthday" v-model="birthday" class="form-control" id="inputBirthday">
                 </div>
                 <div class="form-group">
                     <label for="inputPassword">Password</label>
-                    <input type="password" name="password" v-model="password" class="form-control" id="inputPassword" placeholder="Password">
+                    <input required type="password" name="password" v-model="password" class="form-control" id="inputPassword" placeholder="Password">
                 </div>
-                <button @click="register" type="button" class="btn btn-primary">Registry</button>
+                <div class="alert alert-danger" v-if="error" role="alert">
+                    {{error}}
+                </div>
+                <div class="alert alert-success" v-if="success" role="alert">
+                    {{success}}
+                </div>
+                <button @submit.prevent="register" type="submit" class="btn btn-primary">Registry</button>
             </form>
         </div>
     </div>
@@ -38,37 +37,42 @@
 
 <script>
 
-import Header from './Header.vue'
-import AuthenticationService from '@/services/AuthenticationService';
+import Auth from '@/services/AuthenticationService'
 
 export default {
     name: 'UserRegister',
     data () {
         return {
+            error: null,
+            success:null,
             name: '',
             email: '',
             cpf: '',
             birthday: '',
-            user_type: '',
             password: ''
 
         }
     },
     components: {
-        Header
     },
     methods:{
         async register() {
+
             const data = {
                 name: this.name,
                 email: this.email,
                 cpf: this.cpf,
                 password: this.password,
-                type: this.user_type,
+                type: 1,
                 birthday: this.birthday
             }
-            const response = await AuthenticationService.user_register(data);
-            console.log(response);
+            try{
+                await Auth.user_register(data);
+            }catch(error){
+                this.error = error.response.data.message;
+            }
+
+            this.error = "Registry success";
         }
     }
 }
@@ -76,5 +80,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .hello{ text-align: center; }
+    
 </style>
