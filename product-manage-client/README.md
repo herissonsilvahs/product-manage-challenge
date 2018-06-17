@@ -1,6 +1,6 @@
 # product-manage-client
 
-> Client for product-manage application
+> Client for product manage application
 
 ## Build Setup
 

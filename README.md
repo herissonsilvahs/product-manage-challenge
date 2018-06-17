@@ -19,6 +19,7 @@ Not 100% funcionality, *just for learning*<br>
 - [ ] Some validations
 
 * Client API
-- [ ] API comunication
+- [X] API comunication
 - [ ] Login Page
+- [ ] User Register Page
 - [ ] User Dashboard
