@@ -3,6 +3,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+const cors = require('cors')
 var configs = require('./configs.js');
 
 var authRouter = require('./routes/auth');
@@ -19,13 +20,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('public-key', configs.secret); // public key for jwt token generation
 
-app.use(function (request, response, next) {
-    response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    response.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
+app.use(cors())
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', usersRouter);
