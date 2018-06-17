@@ -21,5 +21,5 @@ Not 100% funcionality, *just for learning*<br>
 * Client API
 - [x] API comunication
 - [ ] Login Page
-- [ ] User Register Page
+- [x] User Register Page
 - [ ] User Dashboard
