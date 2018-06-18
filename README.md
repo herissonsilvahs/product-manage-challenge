@@ -15,15 +15,14 @@ Not 100% funcionality, *just for learning*<br>
 * Server API
 - [x] CRUD products
 - [x] CRUD Users
-- [x] JWT implemented
-- [x] Some validations
+- [x] JWT implementation
+- [x] Cors implementation
+- [ ] Some validations
 
 * Client API
-- [x] API comunication
-- [x] User Register Page
+- [x] API comunication by axios
 - [x] Registry user
-- [x] Login Page
-- [ ] Persist token
-- [ ] Login user in dashboard
+- [ ] Vuex implementation
+- [ ] Login user
 - [ ] Client Dashboard
 - [ ] Admin Dashboard
