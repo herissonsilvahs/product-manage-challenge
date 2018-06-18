@@ -5,8 +5,13 @@
             <form class="form-inline">
                 <div class="row">
                     <div class="col">
-                        <router-link to="registry">
+                        <router-link v-if="!$store.state.userLogged" to="registry">
                             <button type="button" class="btn btn-outline-light">Sign Up</button>
+                        </router-link>
+                        <router-link v-if="$store.state.userLogged" to="registry">
+                            <button type="button" class="btn btn-outline-link">
+                                Hi, {{$store.state.user.name}}
+                            </button>
                         </router-link>
                     </div>
                 </div>
@@ -17,7 +22,7 @@
 
 <script>
 export default {
-  
+
 }
 </script>
 

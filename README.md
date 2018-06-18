@@ -22,7 +22,7 @@ Not 100% funcionality, *just for learning*<br>
 * Client API
 - [x] API comunication by axios
 - [x] Registry user
-- [ ] Vuex implementation
-- [ ] Login user
+- [x] Vuex implementation
+- [x] Login user
 - [ ] Client Dashboard
 - [ ] Admin Dashboard

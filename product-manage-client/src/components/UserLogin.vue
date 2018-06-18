@@ -14,7 +14,7 @@
                 <div class="alert alert-danger" v-if="error" role="alert">
                     {{error}}
                 </div>
-                <button @click="login" type="button" class="btn btn-primary">Login</button>
+                <button @click="login" type="button" class="btn btn-dark">Login</button>
             </form>
         </div>
     </div>
@@ -35,15 +35,19 @@
         },
         methods: {
             async login() {
-                const data = {
+                const request_data = {
                     email: this.email,
                     password: this.password
                 }
 
                 try{
-                    const response = await Auth.user_login(data);
+                    const response = await Auth.user_login(request_data);
 
-                    console.log(response);
+                    if(response.data.success)
+                    {
+                        this.$store.dispatch('setToken', response.data.token)
+                        this.$store.dispatch('setUser', response.data.user_data)
+                    }
 
                 }catch(error){
                     this.error = error.response.data.message;

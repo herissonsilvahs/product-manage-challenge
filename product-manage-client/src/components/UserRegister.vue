@@ -28,10 +28,7 @@
                     <div class="alert alert-danger" v-if="error" role="alert">
                         {{error}}
                     </div>
-                    <div class="alert alert-success" v-if="success" role="alert">
-                        {{success}}
-                    </div>
-                    <button @submit.prevent="register" type="submit" class="btn btn-primary">Registry</button>
+                    <button @submit.prevent="register" type="submit" class="btn btn-dark">Registry</button>
                 </form>
             </div>
         </div>
@@ -48,7 +45,6 @@ export default {
     data () {
         return {
             error: null,
-            success:null,
             name: '',
             email: '',
             cpf: '',
@@ -73,11 +69,10 @@ export default {
             }
             try{
                 await Auth.user_register(data);
+                this.$router.push('/')
             }catch(error){
                 this.error = error.response.data.message;
             }
-
-            this.error = "Registry success";
         }
     }
 }
