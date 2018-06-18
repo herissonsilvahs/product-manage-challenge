@@ -1,22 +1,26 @@
 <template>
   <div class="home">
-    
+    <component-header />
+    <div class="container-fluid">
+        <component-user-login />
+    </div>
   </div>
 </template>
 
 <script>
 
-import Header from './Header.vue'
+import ComponentUserLogin from './UserLogin.vue'
+import ComponentHeader from '@/components/Header'
 
 export default {
     name: 'Home',
     data () {
         return {
-            msg: 'Welcome to Your Vue.js App'
         }
     },
     components: {
-        Header
+        ComponentUserLogin,
+        ComponentHeader
     }
 }
 </script>

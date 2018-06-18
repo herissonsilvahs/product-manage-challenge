@@ -10,18 +10,13 @@ export default new Router({
   routes: [
     {
         path: '/',
-        name: 'Home',
+        name: 'home',
         component: Home
     },
     {
         path: '/registry',
-        name: 'UserRegister',
+        name: 'user-registry',
         component: UserRegister
-    },
-    {
-        path: '/login',
-        name: 'UserLogin',
-        component: UserLogin
     }
   ]
 })
