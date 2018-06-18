@@ -5,10 +5,12 @@ Not 100% funcionality, *just for learning*<br>
 * Enter api directory and run:<br>
     ```
     $ npm install
-    ```
-* Running in dev mode
-    ```
+    
+    # Running in dev mode
     $ npm run start-dev
+
+    # setup config file, add your modifications
+    cp configs-example.js configs.js
     ```
 
 **Features**
