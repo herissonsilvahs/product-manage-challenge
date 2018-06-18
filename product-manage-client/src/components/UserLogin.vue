@@ -47,6 +47,7 @@
                     {
                         this.$store.dispatch('setToken', response.data.token)
                         this.$store.dispatch('setUser', response.data.user_data)
+                        this.$router.push('/dashboard')
                     }
 
                 }catch(error){

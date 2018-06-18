@@ -13,6 +13,14 @@ Not 100% funcionality, *just for learning*<br>
     cp configs-example.js configs.js
     ```
 
+* Client API is necessary create a root user by seed
+    ```
+    $ npm install
+
+    # To alter attributes for user, enter configs/seed-config.js
+    $ npm run seed-user-admin
+
+
 **Features**
 * Server API
 - [x] CRUD products
@@ -26,5 +34,4 @@ Not 100% funcionality, *just for learning*<br>
 - [x] Registry user
 - [x] Vuex implementation
 - [x] Login user
-- [ ] Client Dashboard
-- [ ] Admin Dashboard
+- [x] User Dashboard

@@ -10,6 +10,14 @@ router.get('/list', function(request, response, next) {
     });
 });
 
+router.get('/:id', function(request, response, next) {
+    Product.findById(request.params.id, function(error, product){
+        if(error)
+            response.status(400).json({message: error});
+        response.status(200).json(product);
+    });
+});
+
 router.get('/search/:query', function(request, response, next) {
     Product.find({name: { $regex: '.*' + request.params.query + '.*' }},function(error, products){
         if(error)
