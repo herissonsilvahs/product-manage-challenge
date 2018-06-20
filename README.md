@@ -27,7 +27,7 @@ Not 100% funcionality, *just for learning*<br>
 - [x] CRUD Users
 - [x] JWT implementation
 - [x] Cors implementation
-- [ ] Some validations
+- [x] Error handler
 
 * Client API
 - [x] API comunication by axios

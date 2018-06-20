@@ -1,4 +1,4 @@
 module.exports = {
     'secret': 'secret-key',
-    'mongo_uri': 'mongodb://user:password@host/schema'
+    'mongo_uri': 'mongodb://user:password@host:port/schema'
 };

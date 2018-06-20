@@ -1,12 +1,12 @@
 <template>
-    <div class="row">
+    <div class="main-content row">
        <div class="col-8 content">
             <form class="form-inline my-2 my-lg-0">
                 <input v-model="query" class="form-control mr-sm-2" type="search" placeholder="Product" aria-label="Search">
                 <button @click="searchProduct" class="btn btn-outline-success" type="submit">Search</button>
             </form>
             <div class="row">
-                <div class="card product" v-for="product in products">
+                <div class="card product" v-for="product in product_list">
                   <img class="card-img-top" src="" alt="Card image cap">
                   <div class="card-body">
                     <h5 class="card-title">{{product.name}}</h5>
@@ -23,27 +23,26 @@
             </div>
         </div>
         <div class="col-4">
-            <form>
+            <form @submit.prevent="addProduct">
                 <h5>Add new Product</h5>
                 <div class="form-group">
-                    <input type="text" v-model="registry.name" class="form-control" placeholder="Enter name product" required>
+                    <input type="text" required v-model="registry.name" class="form-control" placeholder="Enter name product" required>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" v-model="registry.description" id="exampleFormControlTextarea1" aria-describedby="descriptionHelp" rows="3" required></textarea>
+                    <textarea class="form-control" required v-model="registry.description" id="exampleFormControlTextarea1" aria-describedby="descriptionHelp" rows="3" required></textarea>
                     <small id="descriptionHelp">Product description</small>
                 </div>
                 <div class="form-group">
-                    <input type="date" v-model="registry.duedate" aria-describedby="expiryHelp" class="form-control" required>
+                    <input type="date" required v-model="registry.duedate" aria-describedby="expiryHelp" class="form-control" required>
                     <small id="expiryHelp">Product expiry date</small>
                 </div>
-
                 <div class="form-group">
-                    <input type="text" v-model="registry.price" class="form-control" placeholder="Price" required>
+                    <input type="text" required v-model="registry.price" class="form-control" placeholder="Price" required>
                 </div>
                 <div class="alert alert-info" v-if="registry_message" role="alert">
                     {{registry_message}}
                 </div>
-                <button type="button" @click="addProduct" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
         <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -69,7 +68,7 @@
                         <div class="alert alert-info" v-if="update_message" role="alert">
                             {{update_message}}
                         </div>
-                        <button type="submit" @click="updateProduct()" class="btn btn-primary">Save</button>
+                        <button @click="updateProduct(false)" type="button" class="btn btn-primary">Save</button>
                     </form>
                 </div>
             </div>
@@ -83,16 +82,16 @@
     export default {
         data(){
             return{
-                products: null,
+                product_list: null,
                 registry_message: null,
-                registry: {
+                registry: { // Register form fields
                     name: '',
                     description: '',
                     duedate: '',
                     price: ''
                 },
                 update_message: null,
-                update: {
+                update: { // Update form fields
                     name: '',
                     description: '',
                     duedate: '',
@@ -103,38 +102,52 @@
         },
         mounted: async function(){
             try{
-                const response = await Auth.product_list(this.$store.state.token)
-                response.data.forEach((item)=>{
-                    item.price = item.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
-                    item.duedate = item.duedate.split('T')[0]
+                let response = await Auth.product_list(this.$store.state.token)
+                response.data.products.forEach((item)=>{
+                    item.price = this.formatFieldPrice(item.price)
+                    item.duedate = this.formatFieldData(item.duedate)
                 })
-
-                this.products = response.data;
+                this.product_list = response.data.products;
             }catch(error){
-                console.log(erro)
+                console.log(erro.response.data)
             }
         },
 
         methods: {
+
+            formatFieldData(date)
+            {
+                let dateArray = date.split('T')[0].split("-")
+                const year = dateArray[0]
+                const mounth = dateArray[1]
+                const day = dateArray[2]
+                return (day+'-'+mounth+'-'+year)
+            },
+
+            formatFieldPrice(price)
+            {
+                return price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
+            },
+
             async deleteProduct(id){
                 try{
-                    const response = await Auth.remove_product(id, this.$store.state.token)
+                    let response = await Auth.remove_product(id, this.$store.state.token)
                     if(response.status === 200){
                         /* Remove item deleted from list*/
-                        this.products.forEach((item, index)=>{
+                        this.product_list.forEach((item, index)=>{
                             if(item._id === id)
-                                this.products.splice(index, 1)
+                                this.product_list.splice(index, 1)
                         })
                     }
                 }catch(error)
                 {
-                    console.log(erro)
+                    console.log(erro.response.data)
                 }
             },
 
             async addProduct(){
                 try{
-                    const response = await Auth.new_product({
+                    let response = await Auth.new_product({
                         name: this.registry.name,
                         price: this.registry.price,
                         duedate: this.registry.duedate,
@@ -144,31 +157,47 @@
                     if(response.status === 201){
 
                         /* Format date and price attributes */
-                        response.data.price = response.data.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
-                        response.data.duedate = response.data.duedate.split('T')[0]
+                        response.data.product.price = this.formatFieldPrice(response.data.product.price)
+                        response.data.product.duedate = this.formatFieldData(response.data.product.duedate)
 
-                        this.products.push(response.data) /* Add to list products */
+                        this.product_list.push(response.data.product) /* Add to list products */
 
-                        this.registry_message = "new regitry success"
+                        this.registry_message = "new registry success"
 
-                        this.update_message = null
-                        this.update.name = ''
-                        this.update.price = ''
-                        this.update.description = ''
-                        this.update.duedate = ''
+                        this.registry = {
+                            name: ' ',
+                            description: ' ',
+                            duedate: ' ',
+                            price: ' '
+                        }
 
                         setTimeout(()=>{
                             this.registry_message = null
                         }, 3000)
                     }
                 }catch(error){
-                    this.registry_message = error.response.data.message;
+                    this.registry_message = error.response.data;
                 }
             },
-            async updateProduct(id = false){
-                if(!id){
+
+            async updateProduct(id){
+
+                /*
+                 * If call function pass id, get product values and set fields
+                 * else update product with values in fields
+                 */
+                if(id){
                     try{
-                        const response = await Auth.update_product(
+                        let response = await Auth.product_get(id, this.$store.state.token)
+                        // response.data.product.duedate = this.formatFieldData(response.data.product.duedate)
+                        this.update = response.data.product
+                    }catch(error){
+                        this.update_message = error.response.data;
+                    }
+                }else{
+
+                    try{
+                        let resp = await Auth.update_product(
                             this.update._id,
                         {
                             name: this.update.name,
@@ -177,39 +206,32 @@
                             description: this.update.description
                         }, this.$store.state.token);
 
-                        if(response.status === 200){
+                        if(resp.status === 200){
                             /* Format attributes*/
-                            response.data.price = response.data.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
-                            response.data.duedate = response.data.duedate.split('T')[0]
+                            resp.data.product.price = this.formatFieldPrice(resp.data.product.price)
+                        resp.data.product.duedate = this.formatFieldData(resp.data.product.duedate)
 
                             /* Search item updated in products and update */
-                            this.products.forEach((item, index)=>{
+                            this.product_list.forEach((item, index)=>{
                                 if(item._id === this.update._id){
 
-                                    this.products[index] = response.data
+                                    this.product_list[index] = resp.data.product
                                 }
                             })
                             this.update_message = "update success"
 
+                            $('#myModal').modal('hide')
+
                             setTimeout(()=>{
                                 this.update_message = null
-                                this.update.name = ''
-                                this.update.price = ''
-                                this.update.description = ''
-                                this.update.duedate = ''
                             }, 3000)
                         }
                     }catch(error){
-                        this.update_message = error.response.data.message;
-                    }
-                }else{
+                        this.update_message = error.resp.data
 
-                    try{
-                        const response = await Auth.product_get(id, this.$store.state.token)
-                        response.data.duedate = response.data.duedate.split('T')[0]
-                        this.update = response.data
-                    }catch(error){
-                        this.update_message = error.response.data.message;
+                        setTimeout(()=>{
+                            this.update_message = null
+                        }, 3000)
                     }
                 }
             },
@@ -217,22 +239,24 @@
             async searchProduct(){
                 if(this.query == '')
                     return
-
                 try{
-                    const response = await Auth.product_search(this.query, this.$store.state.token)
-                    response.data.forEach((item)=>{
-                        item.price = item.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
-                        item.duedate = item.duedate.split('T')[0]
+                    let response = await Auth.product_search(this.query, this.$store.state.token)
+
+                    /* Format date and price attributes */
+                    response.data.products.forEach((item)=>{
+                        item.price = this.formatFieldPrice(item.price)
+                        item.duedate = this.formatFieldData(item.duedate)
                     })
 
-                    this.products = response.data;
+                    this.product_list = response.data.products;
                 }catch(error){
-                    console.log(erro.data)
+                    console.log(erro.reponse.data)
                 }
             }
 
         }
     }
+
 
     $('#myModal').on('shown.bs.modal', function () {
       $('#myInput').trigger('focus')
@@ -240,6 +264,9 @@
 </script>
 
 <style scoped>
+    .main-content{
+        padding-top: 2em;
+    }
     .card{
         width: 16rem;
         margin-left: 1em;

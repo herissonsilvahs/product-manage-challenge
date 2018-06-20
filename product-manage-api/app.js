@@ -24,6 +24,25 @@ app.use(cors())
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', usersRouter);
+
+/* handlerErrorMiddleware */
+app.use(function(error, request, response, next){
+    /* 
+     * Crash problem after error resolve.
+     * This return error for express and after
+     * send response
+     */
+    if(response.headersSent)
+        next(error)
+    response.status(401).json({Error: error})
+})
+
 app.use('/api/v1/auth/products', productsRouter);
+
+/* handlerErrorMiddleware */
+app.use(function(error, request, response, next){
+    next(error)
+    response.status(401).json({Error: error})
+})
 
 module.exports = app;

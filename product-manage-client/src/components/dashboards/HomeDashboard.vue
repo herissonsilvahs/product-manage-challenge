@@ -1,13 +1,13 @@
 <template>
    <div>
-        <div>
+        <div class="contentForm">
             <form class="form-inline my-2 my-lg-0">
                 <input v-model="query" class="form-control mr-sm-2" type="search" placeholder="Product" aria-label="Search">
-                <button @click="searchProduct" class="btn btn-outline-success" type="submit">Search Products</button>
+                <button @click="searchProduct" class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
-        <div class="row">
-            <div class="card product" v-for="product in products">
+        <div class="row contentItems">
+            <div class="card product" v-for="product in product_list">
               <img class="card-img-top" src="" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">{{product.name}}</h5>
@@ -15,8 +15,9 @@
                     {{product.description}}
                 </p>
                 <p class="card-expiry">Expiry: {{product.duedate}}</p>
-                <p class="card-price">Price: {{product.price}} R$</p>
-                <button type="button" class="btn btn-dark">More</button>
+                <p class="card-price">Price: {{product.price}}</p>
+
+                <button class="btn btn-dark">More info</button>
               </div>
             </div>
         </div>
@@ -30,40 +31,50 @@
     export default {
         data(){
             return{
-                products: null,
+                product_list: null,
                 query: ''
             }
         },
         mounted: async function(){
             try{
-                const response = await Auth.product_list(this.$store.state.token)
-                //console.log(response.data)
-                response.data.forEach((item)=>{
-                    item.price = item.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
-                    item.duedate = item.duedate.split('T')[0]
+                let response = await Auth.product_list(this.$store.state.token)
+                response.data.products.forEach((item)=>{
+                    item.price = this.formatFieldPrice(item.price)
+                    item.duedate = this.formatFieldData(item.duedate)
                 })
-                this.products = response.data;
+                this.product_list = response.data.products;
             }catch(error){
-                console.log(erro)
+                console.log(erro.response.data)
             }
         },
         methods: {
+            formatFieldData(date)
+            {
+                let dateArray = date.split('T')[0].split("-")
+                const year = dateArray[0]
+                const mounth = dateArray[1]
+                const day = dateArray[2]
+                return (day+'-'+mounth+'-'+year)
+            },
+            formatFieldPrice(price)
+            {
+                return price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
+            },
             async searchProduct(){
                 if(this.query == '')
                     return
-
                 try{
-                    const response = await Auth.product_search(this.query, this.$store.state.token)
+                    let response = await Auth.product_search(this.query, this.$store.state.token)
 
                     /* Format date and price attributes */
-                    response.data.forEach((item)=>{
-                        item.price = item.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
-                        item.duedate = item.duedate.split('T')[0]
+                    response.data.products.forEach((item)=>{
+                        item.price = this.formatFieldPrice(item.price)
+                        item.duedate = this.formatFieldData(item.duedate)
                     })
 
-                    this.products = response.data;
+                    this.product_list = response.data.products;
                 }catch(error){
-                    console.log(erro.data)
+                    console.log(error.response.data)
                 }
             }
         }
@@ -71,10 +82,15 @@
 </script>
 
 <style scoped>
+    .contentForm{
+        padding-top: 1em;
+    }
+    .contentItems{
+        padding-top: 3em;
+    }
     .card{
         width: 14rem;
         margin-left: 1em;
-        margin-top: 2em;
     }
     .card .card-text{
         text-align: justify;

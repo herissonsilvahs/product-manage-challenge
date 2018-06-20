@@ -3,19 +3,24 @@
         <component-header />
         <div class="container-fluid">
             <div class="row justify-content-md-center"">
-                <form class="form col-5">
+                <form class="form col-5" @submit.prevent="register">
                     <div class="form-group">
                         <label for="inputName">Name</label>
                         <input required type="text" name="name" v-model="name" class="form-control" id="inputName" placeholder="Name">
                     </div>
                     <div class="form-group">
                         <label for="inputEmail">Email address</label>
-                        <input required type="email" name="email" v-model="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted"></small>
+                        <input required type="email" name="email" v-model="email" class="form-control" id="inputEmail" placeholder="Enter email">
+                        <div class="alert alert-danger" v-if="emailError" role="alert">
+                            {{emailError}}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputCpf">CPF</label>
                         <input required type="text" name="cpf" v-model="cpf" class="form-control" id="inputCpf" placeholder="000.000.000-00">
+                        <div class="alert alert-danger" v-if="cpfError" role="alert">
+                            {{cpfError}}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputBirthday">Birthday</label>
@@ -28,7 +33,7 @@
                     <div class="alert alert-danger" v-if="error" role="alert">
                         {{error}}
                     </div>
-                    <button @submit.prevent="register" type="submit" class="btn btn-dark">Registry</button>
+                    <button type="submit" class="btn btn-dark">Registry</button>
                 </form>
             </div>
         </div>
@@ -45,6 +50,8 @@ export default {
     data () {
         return {
             error: null,
+            emailError: null,
+            cpfError: null,
             name: '',
             email: '',
             cpf: '',
@@ -57,7 +64,8 @@ export default {
         ComponentHeader
     },
     methods:{
-        async register() {
+        async register()
+        {
 
             const data = {
                 name: this.name,
@@ -67,11 +75,23 @@ export default {
                 type: 1,
                 birthday: this.birthday
             }
-            try{
+            try
+            {
                 await Auth.user_register(data);
                 this.$router.push('/')
-            }catch(error){
-                this.error = error.response.data.message;
+            }catch(error)
+            {
+                /* Show error case email or cpf exist in system */
+                if(error.response.data.Error.code === 11000)
+                {
+                    const errorMsg = new String(error.response.data.Error.errmsg)
+                    if(errorMsg.search('email') != -1)
+                        this.emailError = "Email exist, enter other email please"
+
+                    else if(errorMsg.search('cpf') != -1)
+                        this.cpfError = "This cpf exist in system"
+                }else
+                    this.error = error.response.data // show some error
             }
         }
     }
