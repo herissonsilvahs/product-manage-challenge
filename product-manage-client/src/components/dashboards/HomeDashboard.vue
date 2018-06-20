@@ -3,7 +3,7 @@
         <div class="contentForm">
             <form class="form-inline my-2 my-lg-0">
                 <input v-model="query" class="form-control mr-sm-2" type="search" placeholder="Product" aria-label="Search">
-                <button @click="searchProduct" class="btn btn-outline-success" type="submit">Search</button>
+                <button @click="searchProduct" @keyup.enter="searchProduct" class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
         <div class="row contentItems">
@@ -59,16 +59,13 @@
         },
         methods: {
             async searchProduct(){
-                if(this.query == '')
-                    return
                 try{
-                    let response = await Auth.product_search(this.query, this.$store.state.token)
-
-                    /* Format date and price attributes */
-                    response.data.products.forEach((item)=>{
-                        item.price = item.price
-                        item.duedate = item.duedate
-                    })
+                    let response = null
+                    
+                    if(this.query == '')
+                        response = await Auth.product_list(this.$store.state.token)
+                    else
+                        response = await Auth.product_search(this.query, this.$store.state.token)
 
                     this.product_list = response.data.products;
                 }catch(error){
