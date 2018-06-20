@@ -68,7 +68,7 @@
                         <div class="alert alert-info" v-if="update_message" role="alert">
                             {{update_message}}
                         </div>
-                        <button @click="updateProduct(false)" type="button" class="btn btn-primary">Save</button>
+                        <button @click="updateProduct(false)" data-dismiss="modal" type="button" class="btn btn-primary">Save</button>
                     </form>
                 </div>
             </div>
@@ -97,7 +97,8 @@
                     duedate: '',
                     price: ''
                 },
-                query: ''
+                query: '',
+                modalShowClass: false
             }
         },
         mounted: async function(){
@@ -219,8 +220,6 @@
                                 }
                             })
                             this.update_message = "update success"
-
-                            $('#myModal').modal('hide')
 
                             setTimeout(()=>{
                                 this.update_message = null
