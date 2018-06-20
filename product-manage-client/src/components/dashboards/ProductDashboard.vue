@@ -156,10 +156,6 @@
 
                     if(response.status === 201){
 
-                        /* Format date and price attributes */
-                        response.data.product.price = response.data.product.price
-                        response.data.product.duedate = reponse.data.product.duedate
-
                         this.product_list.push(response.data.product) /* Add to list products */
 
                         this.registry_message = "new registry success"
@@ -189,7 +185,6 @@
                 if(id){
                     try{
                         let response = await Auth.product_get(id, this.$store.state.token)
-                        // response.data.product.duedate = reponse.data.product.duedate
                         this.update = response.data.product
                     }catch(error){
                         this.update_message = error.response.data;
@@ -197,7 +192,7 @@
                 }else{
 
                     try{
-                        let reponse = await Auth.update_product(
+                        let response = await Auth.update_product(
                             this.update._id,
                         {
                             name: this.update.name,
@@ -206,16 +201,13 @@
                             description: this.update.description
                         }, this.$store.state.token);
 
-                        if(reponse.status === 200){
-                            /* Format attributes*/
-                            reponse.data.product.price = reponse.data.product.price
-                        reponse.data.product.duedate = reponse.data.product.duedate
+                        if(response.status === 200){
 
                             /* Search item updated in products and update */
                             this.product_list.forEach((item, index)=>{
                                 if(item._id === this.update._id){
 
-                                    this.product_list[index] = reponse.data.product
+                                    this.product_list[index] = response.data.product
                                 }
                             })
                             this.update_message = "update success"
@@ -225,7 +217,7 @@
                             }, 3000)
                         }
                     }catch(error){
-                        this.update_message = error.reponse.data
+                        this.update_message = error.response.data
 
                         setTimeout(()=>{
                             this.update_message = null
