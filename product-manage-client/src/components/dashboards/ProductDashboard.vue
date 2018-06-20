@@ -152,7 +152,7 @@
 
                     if(response.status === 201){
 
-                        this.product_list.push(response.data.product) /* Add to list products */
+                        this.product_list.unshift(response.data.product) /* Add to list products */
 
                         this.registry_message = "new registry success"
 
