@@ -1,5 +1,5 @@
 module.exports = {
-    name: 'Admin',
+    name: process.env.USER,
     email: 'root@contato.com',
     cpf: '999.999.999-99',
     password: 'root',
