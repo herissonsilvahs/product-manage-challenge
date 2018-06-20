@@ -52,10 +52,6 @@
         mounted: async function(){
             try{
                 let response = await Auth.product_list(this.$store.state.token)
-                response.data.products.forEach((item)=>{
-                    item.price = item.price
-                    item.duedate = item.duedate
-                })
                 this.product_list = response.data.products;
             }catch(error){
                 console.log(erro.response.data)
