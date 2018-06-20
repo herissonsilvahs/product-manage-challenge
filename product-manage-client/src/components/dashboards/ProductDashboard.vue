@@ -97,8 +97,7 @@
                     duedate: '',
                     price: ''
                 },
-                query: '',
-                modalShowClass: false
+                query: ''
             }
         },
         mounted: async function(){
