@@ -35,3 +35,4 @@ Not 100% funcionality, *just for learning*<br>
 - [x] Vuex implementation
 - [x] Login user
 - [x] User Dashboard
+- [ ] Profile Manager
