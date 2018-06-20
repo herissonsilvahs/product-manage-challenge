@@ -10,7 +10,7 @@
                   <li class="nav-item" v-show="$store.state.user.type === 0">
                     <a class="nav-link" href="#/dashboard" @click="showView('product')">Product</a>
                   </li>
-                  <li class="nav-item" v-show="$store.state.user.type === 0">
+                  <li class="nav-item">
                     <a class="nav-link" href="#/dashboard" @click="showView('profile')">Profile</a>
                   </li>
                 </ul>
