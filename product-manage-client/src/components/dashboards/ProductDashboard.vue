@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="col-4">
-            <form @submit.prevent="addProduct">
+            <form @submit.prevent="addProduct" class="form">
                 <h5>Add new Product</h5>
                 <div class="form-group">
                     <input type="text" required v-model="registry.name" class="form-control" placeholder="Enter name product" required>
@@ -263,5 +263,11 @@
     }
     .modal-content{
         padding: 1em;
+    }
+    .form {
+        padding: 1em;
+        border-radius: 20px;
+        box-shadow: 0px 1px 4px black;
+        background-color: white;
     }
 </style>

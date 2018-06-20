@@ -57,3 +57,13 @@
         }
     }
 </script>
+
+<style scoped>
+    .form {
+        padding: 1em;
+        margin-top: 1em;
+        border-radius: 20px;
+        box-shadow: 0px 1px 4px black;
+        background-color: white;
+    }
+</style>

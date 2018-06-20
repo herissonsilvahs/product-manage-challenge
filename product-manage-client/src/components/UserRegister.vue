@@ -3,7 +3,7 @@
         <component-header />
         <div class="container-fluid">
             <div class="row justify-content-md-center"">
-                <form class="form col-5" @submit.prevent="register">
+                <form class="form col-5" @submit.prevent.stop="register">
                     <div class="form-group">
                         <label for="inputName">Name</label>
                         <input required type="text" name="name" v-model="name" class="form-control" id="inputName" placeholder="Name">
@@ -100,5 +100,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    
+    .form {
+        padding: 1em;
+        margin-top: 1em;
+        border-radius: 20px;
+        box-shadow: 0px 1px 4px black;
+        background-color: white;
+    }
 </style>

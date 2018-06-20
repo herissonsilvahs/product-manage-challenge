@@ -15,7 +15,7 @@
 
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <router-link class="dropdown-item" to="dashboard">Dashboard</router-link>
-                            <a class="dropdown-item" @click="logout">Logout</a>
+                            <a class="dropdown-item logout-option" @click="logout">Logout</a>
                           </div>
                         </div>
                     </div>
@@ -39,5 +39,9 @@ export default {
 <style scoped>
     .dropdown .username {
         color: white;
+    }
+
+    .logout-option{
+        cursor: pointer;
     }
 </style>
