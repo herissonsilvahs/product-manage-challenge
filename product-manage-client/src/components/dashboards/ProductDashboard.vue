@@ -232,12 +232,6 @@
                 try{
                     let response = await Auth.product_search(this.query, this.$store.state.token)
 
-                    /* Format date and price attributes */
-                    response.data.products.forEach((item)=>{
-                        item.price = item.price
-                        item.duedate = item.duedate
-                    })
-
                     this.product_list = response.data.products;
                 }catch(error){
                     console.log(erro.reponse.data)
