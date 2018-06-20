@@ -14,8 +14,8 @@
                 <p class="card-text">
                     {{product.description}}
                 </p>
-                <p class="card-expiry">Expiry: {{product.duedate}}</p>
-                <p class="card-price">Price: {{product.price}}</p>
+                <p class="card-expiry">Expiry: {{product.duedate | formatFieldData() }}</p>
+                <p class="card-price">Price: {{product.price | formatFieldPrice()}}</p>
 
                 <button class="btn btn-dark">More info</button>
               </div>
@@ -35,19 +35,7 @@
                 query: ''
             }
         },
-        mounted: async function(){
-            try{
-                let response = await Auth.product_list(this.$store.state.token)
-                response.data.products.forEach((item)=>{
-                    item.price = this.formatFieldPrice(item.price)
-                    item.duedate = this.formatFieldData(item.duedate)
-                })
-                this.product_list = response.data.products;
-            }catch(error){
-                console.log(erro.response.data)
-            }
-        },
-        methods: {
+        filters: {
             formatFieldData(date)
             {
                 let dateArray = date.split('T')[0].split("-")
@@ -59,7 +47,21 @@
             formatFieldPrice(price)
             {
                 return price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
-            },
+            }
+        },
+        mounted: async function(){
+            try{
+                let response = await Auth.product_list(this.$store.state.token)
+                response.data.products.forEach((item)=>{
+                    item.price = item.price
+                    item.duedate = item.duedate
+                })
+                this.product_list = response.data.products;
+            }catch(error){
+                console.log(erro.response.data)
+            }
+        },
+        methods: {
             async searchProduct(){
                 if(this.query == '')
                     return
@@ -68,8 +70,8 @@
 
                     /* Format date and price attributes */
                     response.data.products.forEach((item)=>{
-                        item.price = this.formatFieldPrice(item.price)
-                        item.duedate = this.formatFieldData(item.duedate)
+                        item.price = item.price
+                        item.duedate = item.duedate
                     })
 
                     this.product_list = response.data.products;

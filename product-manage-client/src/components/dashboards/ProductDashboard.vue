@@ -13,8 +13,8 @@
                     <p class="card-text">
                         {{product.description}}
                     </p>
-                    <p class="card-expiry">Expiry: {{product.duedate}}</p>
-                    <p class="card-price">Price: {{product.price}}</p>
+                    <p class="card-expiry">Expiry: {{product.duedate | formatFieldData() }}</p>
+                    <p class="card-price">Price: {{product.price | formatFieldPrice() }}</p>
                     <button @click="updateProduct(product._id)" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Edit</button>
 
                     <button @click="deleteProduct(product._id)" class="btn btn-danger">Delete</button>
@@ -100,21 +100,7 @@
                 query: ''
             }
         },
-        mounted: async function(){
-            try{
-                let response = await Auth.product_list(this.$store.state.token)
-                response.data.products.forEach((item)=>{
-                    item.price = this.formatFieldPrice(item.price)
-                    item.duedate = this.formatFieldData(item.duedate)
-                })
-                this.product_list = response.data.products;
-            }catch(error){
-                console.log(erro.response.data)
-            }
-        },
-
-        methods: {
-
+        filters: {
             formatFieldData(date)
             {
                 let dateArray = date.split('T')[0].split("-")
@@ -123,11 +109,25 @@
                 const day = dateArray[2]
                 return (day+'-'+mounth+'-'+year)
             },
-
             formatFieldPrice(price)
             {
                 return price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
-            },
+            }
+        },
+        mounted: async function(){
+            try{
+                let response = await Auth.product_list(this.$store.state.token)
+                response.data.products.forEach((item)=>{
+                    item.price = item.price
+                    item.duedate = item.duedate
+                })
+                this.product_list = response.data.products;
+            }catch(error){
+                console.log(erro.response.data)
+            }
+        },
+
+        methods: {
 
             async deleteProduct(id){
                 try{
@@ -157,8 +157,8 @@
                     if(response.status === 201){
 
                         /* Format date and price attributes */
-                        response.data.product.price = this.formatFieldPrice(response.data.product.price)
-                        response.data.product.duedate = this.formatFieldData(response.data.product.duedate)
+                        response.data.product.price = response.data.product.price
+                        response.data.product.duedate = reponse.data.product.duedate
 
                         this.product_list.push(response.data.product) /* Add to list products */
 
@@ -189,7 +189,7 @@
                 if(id){
                     try{
                         let response = await Auth.product_get(id, this.$store.state.token)
-                        // response.data.product.duedate = this.formatFieldData(response.data.product.duedate)
+                        // response.data.product.duedate = reponse.data.product.duedate
                         this.update = response.data.product
                     }catch(error){
                         this.update_message = error.response.data;
@@ -197,7 +197,7 @@
                 }else{
 
                     try{
-                        let resp = await Auth.update_product(
+                        let reponse = await Auth.update_product(
                             this.update._id,
                         {
                             name: this.update.name,
@@ -206,16 +206,16 @@
                             description: this.update.description
                         }, this.$store.state.token);
 
-                        if(resp.status === 200){
+                        if(reponse.status === 200){
                             /* Format attributes*/
-                            resp.data.product.price = this.formatFieldPrice(resp.data.product.price)
-                        resp.data.product.duedate = this.formatFieldData(resp.data.product.duedate)
+                            reponse.data.product.price = reponse.data.product.price
+                        reponse.data.product.duedate = reponse.data.product.duedate
 
                             /* Search item updated in products and update */
                             this.product_list.forEach((item, index)=>{
                                 if(item._id === this.update._id){
 
-                                    this.product_list[index] = resp.data.product
+                                    this.product_list[index] = reponse.data.product
                                 }
                             })
                             this.update_message = "update success"
@@ -225,7 +225,7 @@
                             }, 3000)
                         }
                     }catch(error){
-                        this.update_message = error.resp.data
+                        this.update_message = error.reponse.data
 
                         setTimeout(()=>{
                             this.update_message = null
@@ -242,8 +242,8 @@
 
                     /* Format date and price attributes */
                     response.data.products.forEach((item)=>{
-                        item.price = this.formatFieldPrice(item.price)
-                        item.duedate = this.formatFieldData(item.duedate)
+                        item.price = item.price
+                        item.duedate = item.duedate
                     })
 
                     this.product_list = response.data.products;
