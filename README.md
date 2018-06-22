@@ -7,7 +7,7 @@ Not 100% funcionality, *just for learning*<br>
     $ npm install
     
     # Running in dev mode
-    $ npm run start-dev
+    $ npm run dev
 
     # setup config file, add your modifications
     cp configs-example.js configs.js
