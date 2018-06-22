@@ -6,20 +6,13 @@
                 <button @click="searchProduct" @keyup.enter="searchProduct" class="btn btn-outline-success" type="submit">Search</button>
             </form>
             <div class="row">
-                <div class="card product" v-for="product in product_list">
-                  <img class="card-img-top" src="" alt="Card image cap">
-                  <div class="card-body">
-                    <h5 class="card-title">{{product.name}}</h5>
-                    <p class="card-text">
-                        {{product.description}}
-                    </p>
-                    <p class="card-expiry">Expiry: {{product.duedate | formatFieldData() }}</p>
-                    <p class="card-price">Price: {{product.price | formatFieldPrice() }}</p>
-                    <button @click="updateProduct(product._id)" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Edit</button>
-
-                    <button @click="deleteProduct(product._id)" class="btn btn-danger">Delete</button>
-                  </div>
-                </div>
+                <product-card 
+                    v-for="product in product_list"
+                    :key="product._id"
+                    :product="product"
+                    @delete="deleteProduct"
+                    @update="updateProduct"
+                />
             </div>
         </div>
         <div class="col-4">
@@ -78,6 +71,7 @@
 
 <script>
     import Auth from '@/services/AuthenticationService'
+    import ProductCard from './product/ProductCard.vue'
 
     export default {
         data(){
@@ -100,19 +94,8 @@
                 query: ''
             }
         },
-        filters: {
-            formatFieldData(date)
-            {
-                let dateArray = date.split('T')[0].split("-")
-                const year = dateArray[0]
-                const mounth = dateArray[1]
-                const day = dateArray[2]
-                return (day+'-'+mounth+'-'+year)
-            },
-            formatFieldPrice(price)
-            {
-                return price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
-            }
+        components: {
+            ProductCard
         },
         mounted: async function(){
             try{
@@ -249,17 +232,6 @@
 <style scoped>
     .main-content{
         padding-top: 2em;
-    }
-    .card{
-        width: 16rem;
-        margin-left: 1em;
-        margin-top: 2em;
-    }
-    .card .card-text{
-        text-align: justify;
-    }
-    .card .card-price, .card-expiry{
-        text-align: left;
     }
     .modal-content{
         padding: 1em;
