@@ -7,19 +7,12 @@
             </form>
         </div>
         <div class="row contentItems">
-            <div class="card product" v-for="product in product_list">
-              <img class="card-img-top" src="" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">{{product.name}}</h5>
-                <p class="card-text">
-                    {{product.description}}
-                </p>
-                <p class="card-expiry">Expiry: {{product.duedate | formatFieldData() }}</p>
-                <p class="card-price">Price: {{product.price | formatFieldPrice()}}</p>
-
-                <button class="btn btn-dark">More info</button>
-              </div>
-            </div>
+            <product-card
+                v-for="product in product_list"
+                :key="product._id"
+                :product="product"
+                :options="product_options"
+            />
         </div>
    </div>
 </template>
@@ -27,13 +20,22 @@
 <script>
 
     import Auth from '@/services/AuthenticationService'
+    import ProductCard from './product/ProductCard.vue'
 
     export default {
         data(){
             return{
                 product_list: null,
+                product_options: {
+                    edit: false,
+                    delete: false,
+                    infos: true
+                },
                 query: ''
             }
+        },
+        components:{
+            ProductCard
         },
         filters: {
             formatFieldData(date)

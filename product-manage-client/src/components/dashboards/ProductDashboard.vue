@@ -6,10 +6,11 @@
                 <button @click="searchProduct" @keyup.enter="searchProduct" class="btn btn-outline-success" type="submit">Search</button>
             </form>
             <div class="row">
-                <product-card 
+                <product-card
                     v-for="product in product_list"
                     :key="product._id"
                     :product="product"
+                    :options="product_options"
                     @delete="deleteProduct"
                     @update="updateProduct"
                 />
@@ -77,6 +78,11 @@
         data(){
             return{
                 product_list: null,
+                product_options: {
+                    edit: true,
+                    delete: true,
+                    infos: true
+                },
                 registry_message: null,
                 registry: { // Register form fields
                     name: '',
@@ -110,7 +116,11 @@
 
             async deleteProduct(id){
                 try{
-                    let response = await Auth.remove_product(id, this.$store.state.token)
+                    let response = await Auth.remove_product(
+                        id,
+                        this.$store.state.token
+                    )
+
                     if(response.status === 200){
                         /* Remove item deleted from list*/
                         this.product_list.forEach((item, index)=>{
@@ -135,7 +145,8 @@
 
                     if(response.status === 201){
 
-                        this.product_list.unshift(response.data.product) /* Add to list products */
+                        /* Add to list products */
+                        this.product_list.unshift(response.data.product)
 
                         this.registry_message = "new registry success"
 
@@ -163,7 +174,10 @@
                  */
                 if(id){
                     try{
-                        let response = await Auth.product_get(id, this.$store.state.token)
+                        let response = await Auth.product_get(
+                            id,
+                            this.$store.state.token
+                        )
                         this.update = response.data.product
                     }catch(error){
                         this.update_message = error.response.data;
@@ -184,10 +198,8 @@
 
                             /* Search item in products and update */
                             this.product_list.forEach((item, index)=>{
-                                if(item._id === this.update._id){
-
+                                if(item._id === this.update._id)
                                     this.product_list[index] = response.data.product
-                                }
                             })
                             this.update_message = "update success"
 
@@ -222,7 +234,6 @@
 
         }
     }
-
 
     $('#myModal').on('shown.bs.modal', function () {
       $('#myInput').trigger('focus')

@@ -8,9 +8,10 @@
         </p>
         <p class="card-expiry">Expiry: {{product.duedate | formatFieldData() }}</p>
         <p class="card-price">Price: {{product.price | formatFieldPrice() }}</p>
-        <button @click="$emit('update', product._id)" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Edit</button>
+        <button v-show="options.edit" @click="$emit('update', product._id)" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-sm">Edit</button>
 
-        <button @click="$emit('delete', product._id)" class="btn btn-danger">Delete</button>
+        <button v-show="options.delete" @click="$emit('delete', product._id)" class="btn btn-danger btn-sm">Delete</button>
+        <button v-show="options.infos" class="btn btn-dark btn-sm">More info</button>
       </div>
     </div>
 </template>
@@ -18,7 +19,8 @@
 <script>
     export default{
         props: {
-            product: { type: Object }
+            product: { type: Object },
+            options: { type: Object }
         },
         filters: {
             formatFieldData(date)
