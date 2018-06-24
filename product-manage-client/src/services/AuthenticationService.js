@@ -9,7 +9,7 @@ export default {
     },
 
     user_login(data){
-        return api().post('auth/login', data)
+        return api().post('/login', data)
     },
 
     product_list(token){
