@@ -6,12 +6,14 @@ var mongoose = require('mongoose');
 const cors = require('cors')
 var configs = require('./configs.js');
 
-var authRouter = require('./routes/auth');
+var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/products');
 
-var app = express();
+/* Middleware de autenticação */
+var auth_mw = require('./middlewares/authenticate');
 
+var app = express();
 var db = mongoose.connect(configs.mongo_uri);
 
 app.use(logger('dev'));
@@ -22,7 +24,7 @@ app.set('public-key', configs.secret); // public key for jwt token generation
 
 app.use(cors())
 
-app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/login', loginRouter);
 app.use('/api/v1/users', usersRouter);
 
 /* handlerErrorMiddleware */
@@ -37,7 +39,7 @@ app.use(function(error, request, response, next){
     response.status(401).json({Error: error})
 })
 
-app.use('/api/v1/auth/products', productsRouter);
+app.use('/api/v1/auth/products', auth_mw, productsRouter);
 
 /* handlerErrorMiddleware */
 app.use(function(error, request, response, next){

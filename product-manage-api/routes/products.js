@@ -3,55 +3,67 @@ var router = express.Router();
 var Product = require('../models/productModel');
 
 router.get('/list', function(request, response, next) {
-    Product.find(function(error, products){
-        if(error)
-            return next(error)
-        response.status(200).json({message: 'success', products: products});
+    Product.find()
+    .then((products)=>{
+        response.status(200).json({message: 'success', products: products})
+    })
+    .catch((error)=>{
+        next(error)
     });
 });
 
 router.get('/:id', function(request, response, next) {
-    Product.findById(request.params.id, function(error, product){
-        if(error)
-            return next(error)
-        response.status(200).json({message: 'success', product: product});
+    Product.findById(request.params.id)
+    .then((product)=>{
+        response.status(200).json({message: 'success', product: product})
+    })
+    .catch((error)=>{
+        next(error)
     });
 });
 
 router.get('/search/:query', function(request, response, next) {
-    Product.find({name: { $regex: '.*' + request.params.query + '.*' , $options: "i"}},
-        function(error, products){
-            if(error)
-                return next(error)
-            response.status(200).json({message: 'success', products: products});
-        }
-    );
+    Product.find({
+        name: {$regex:'.*'+request.params.query+'.*',$options:"i"}
+    }).then((products)=>{
+        response.status(200).json({message: 'success', products: products})
+    }).catch(()=>{
+        next(error)
+    });
 });
 
 router.post('/new', function(request, response, next){
     var product = new Product(request.body);
-    product.save(function(error){
-        if (error)
-            return next(error)
+    product.save()
+    .then((product)=>{
         response.status(201).json({message:'success', product:product})
+    })
+    .catch((error)=>{
+        next(error)
     });
 });
 
 router.put('/update/:id', function(request, response, next){
-    Product.findByIdAndUpdate(request.params.id, request.body, {new: true},
-        function(error, product){
-            if(error)
-                return next(error)
-            response.status(200).json({message: 'success', product: product});
-        }
-    );
+    Product.findByIdAndUpdate(
+        request.params.id,
+        request.body,
+        {new: true}
+    )
+    .then((product)=>{
+        response.status(200).json({message: 'success', product: product})
+    })
+    .catch((error)=>{
+        next(error)
+    });
 });
 
 router.delete('/delete/:id', function(request, response, next){
-    Product.findByIdAndDelete(request.params.id, function(error, product){
-        if(error)
-            return next(error)
-        response.status(200).json({message: 'success', product: product});
+    Product.findByIdAndDelete(request.params.id)
+    .then((product)=>{
+        response.status(200).json({message: 'success', product: product})
+    })
+    .catch((error)=>{
+        next(error)
     });
 });
 

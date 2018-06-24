@@ -182,7 +182,7 @@
 
                         if(response.status === 200){
 
-                            /* Search item updated in products and update */
+                            /* Search item in products and update */
                             this.product_list.forEach((item, index)=>{
                                 if(item._id === this.update._id){
 
@@ -208,7 +208,7 @@
             async searchProduct(){
                 try{
                     let response = null
-                    
+
                     if(this.query == '')
                         response = await Auth.product_list(this.$store.state.token)
                     else
