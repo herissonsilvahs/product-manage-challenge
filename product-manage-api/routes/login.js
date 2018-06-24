@@ -1,13 +1,13 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../models/userModel');
-var jwt = require('jsonwebtoken');
+const express = require('express');
+const router = express.Router();
+const User = require('../models/userModel');
+const jwt = require('jsonwebtoken');
 
-router.post('/', function(request, response){
+router.post('/', (request, response) => {
     User.findOne({
         email: request.body.email
     })
-    .then((user)=>{
+    .then((user) => {
         if(user){
             if(user.password === request.body.password){
 
@@ -52,7 +52,7 @@ router.post('/', function(request, response){
             });
         }
     })
-    .catch((error)=>{
+    .catch((error) => {
         response.status(400).json({message: error});
     })
 });

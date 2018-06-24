@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken');
 
-module.exports = function(request, response, next){
+module.exports = (request, response, next) => {
     var token = request.body.token || request.query.token || request.headers['x-access-token'];
 
     if(token){
@@ -19,11 +19,11 @@ module.exports = function(request, response, next){
         );
 
         async_jwt
-        .then((decoded)=>{
+        .then((decoded) => {
             request.decoded = decoded;    
             next();
         })
-        .catch((error)=>{
+        .catch((error) => {
             response.status(401).json({
                 success:false,
                 message: error
