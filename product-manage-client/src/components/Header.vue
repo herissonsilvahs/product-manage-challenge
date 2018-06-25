@@ -1,7 +1,7 @@
 <template>
     <header class="header fixed-top">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
-            <a class="navbar-brand" href="#/">Store</a>
+            <a class="navbar-brand" href="#/">Store App Demo</a>
             <form class="form-inline">
                 <div class="row">
                     <div class="col">
@@ -37,6 +37,9 @@ export default {
 }
 </script>
 <style scoped>
+    .header{
+        box-shadow: 0px 1px 4px black;
+    }
     .dropdown .username {
         color: white;
     }

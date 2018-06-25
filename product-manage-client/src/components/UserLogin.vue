@@ -1,5 +1,5 @@
 <template>
-    <div class="hello">
+    <div class="container-fluid">
         <div class="row justify-content-md-center"">
             <form class="form col-5">
                 <div class="form-group">
@@ -47,7 +47,7 @@
                     {
                         this.$store.dispatch('setToken', response.data.token)
                         this.$store.dispatch('setUser', response.data.user_data)
-                        this.$router.push('/dashboard')
+                        this.$router.push('/')
                     }
 
                 }catch(error){

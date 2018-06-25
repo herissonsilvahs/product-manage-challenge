@@ -1,9 +1,8 @@
 <template>
   <div class="home">
     <component-header />
-    <div class="container-fluid">
-        <component-user-login />
-    </div>
+    <home-list-products v-show="$store.state.userLogged" />
+    <component-user-login v-show="!$store.state.userLogged" />
   </div>
 </template>
 
@@ -11,16 +10,14 @@
 
 import ComponentUserLogin from './UserLogin.vue'
 import ComponentHeader from '@/components/Header'
+import HomeListProducts from '@/components/HomeListProducts'
 
 export default {
     name: 'Home',
-    data () {
-        return {
-        }
-    },
     components: {
         ComponentUserLogin,
-        ComponentHeader
+        ComponentHeader,
+        HomeListProducts
     }
 }
 </script>

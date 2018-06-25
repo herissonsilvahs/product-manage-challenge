@@ -224,7 +224,10 @@
                     if(this.query == '')
                         response = await Auth.product_list(this.$store.state.token)
                     else
-                        response = await Auth.product_search(this.query, this.$store.state.token)
+                        response = await Auth.product_search(
+                            this.query,
+                            this.$store.state.token
+                        )
 
                     this.product_list = response.data.products;
                 }catch(error){

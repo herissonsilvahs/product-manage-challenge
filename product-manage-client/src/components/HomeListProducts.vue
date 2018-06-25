@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div class="container-fluid">
         <div class="contentForm">
             <form class="form-inline my-2 my-lg-0">
                 <input v-model="query" class="form-control mr-sm-2" type="search" placeholder="Product" aria-label="Search">
@@ -20,7 +20,7 @@
 <script>
 
     import Auth from '@/services/AuthenticationService'
-    import ProductCard from './product/ProductCard.vue'
+    import ProductCard from '@/components/dashboards/product/ProductCard.vue'
 
     export default {
         data(){
