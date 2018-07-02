@@ -1,17 +1,20 @@
-var axios = require('axios')
+const axios = require('axios')
 user = require('../../config/seed-config.js')
 
-var user_register = function(data){ 
-    return(
-        axios.create({
-            baseURL: 'http://localhost:3000/api/v1/'
-        }).post('users/new', data)
-    )
+const API = () => {
+    return axios.create({
+        baseURL: 'http://localhost:3000/api/v1/'
+    })
 }
 
-var response = user_register(user)
+const request = (data) => {
+    return API().post('users/new', data)
+}
 
-if(response.status === 201)
-    console.log("User created")
-else
-    console.log(response.status)
+request(user)
+.then(()=>{
+  console.log("User created")
+})
+.catch((error)=>{
+  console.log(error.response.data.Error)
+})
