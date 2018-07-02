@@ -2,7 +2,7 @@ Simple rest application with ExpressJS, VueJS, Vuex, Vuetify, and MongoDB<br>
 
 **Usage**
 
-*API
+* API
     ```
     $ npm install
 
