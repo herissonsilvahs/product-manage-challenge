@@ -1,38 +1,24 @@
-Simple rest application with ExpressJS, VueJS, and MongoDB<br>
-Not 100% funcionality, *just for learning*<br>
+Simple rest application with ExpressJS, VueJS, Vuex, Vuetify, and MongoDB<br>
 
 **Usage Server API**
-* Enter api directory and run:<br>
     ```
     $ npm install
-    
-    # Running in dev mode
-    $ npm run dev
 
     # setup config file, add your modifications
     cp configs-example.js configs.js
+
+    # Running in dev mode
+    $ npm run dev
     ```
 
 * Client API is necessary create a root user by seed
     ```
     $ npm install
 
-    # To alter attributes for user, enter configs/seed-config.js
+    # To alter or/and see user admin informations, open configs/seed-config.js
     $ npm run seed-user-admin
 
+    #run in dev mode
+    npm run dev
 
-**Features**
-* Server API
-- [x] CRUD products
-- [x] CRUD Users
-- [x] JWT implementation
-- [x] Cors implementation
-- [x] Error handler
 
-* Client API
-- [x] API comunication by axios
-- [x] Registry user
-- [x] Vuex implementation
-- [x] Login user
-- [x] User Dashboard
-- [ ] Profile Manager
