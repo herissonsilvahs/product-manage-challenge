@@ -1,6 +1,8 @@
 Simple rest application with ExpressJS, VueJS, Vuex, Vuetify, and MongoDB<br>
 
-**Usage Server API**
+**Usage**
+
+*API
     ```
     $ npm install
 
@@ -11,7 +13,7 @@ Simple rest application with ExpressJS, VueJS, Vuex, Vuetify, and MongoDB<br>
     $ npm run dev
     ```
 
-* Client API is necessary create a root user by seed
+* Client
     ```
     $ npm install
 
