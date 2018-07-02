@@ -18,6 +18,11 @@
       </v-btn>
       <v-list>
         <v-list-tile
+          :to="{name: 'home'}"
+        >
+          <v-list-tile-title>Home</v-list-tile-title>
+        </v-list-tile>
+        <v-list-tile
           :to="{name: 'profile_dashboard', params: { action: 'geral' }}"
         >
           <v-list-tile-title>Dashboard</v-list-tile-title>
